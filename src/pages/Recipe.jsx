@@ -98,27 +98,20 @@ export default function Recipe() {
           </div>
 
           <h2 className="font-extrabold">{labels.recipeRows}</h2>
-          {rows.length > 0 && (
-            <div className="grid grid-cols-[1fr_88px_44px] gap-2 px-1 text-xs font-bold text-text-secondary">
-              <span>{labels.chooseIngredient}</span>
-              <span>{labels.qty}</span>
-              <span className="sr-only">{labels.delete}</span>
-            </div>
-          )}
           {rows.map((row, index) => {
             const ingredient = ingredients.find((item) => item.id === Number(row.ingredientId));
             return (
-              <div key={`${row.ingredientId}-${index}`} className="grid grid-cols-[1fr_88px_44px] items-center gap-2">
+              <div key={`${row.ingredientId}-${index}`} className="space-y-2 rounded-2xl border border-border bg-surface-alt p-3">
                 <SelectInput value={row.ingredientId} onChange={(e) => setRows((current) => current.map((item, rowIndex) => rowIndex === index ? { ...item, ingredientId: e.target.value } : item))}>
                   {ingredients.map((item) => <option key={item.id} value={item.id}>{item.name} ({item.unit})</option>)}
                 </SelectInput>
-                <div className="flex items-center gap-1">
-                  <TextInput className="flex-1" type="number" min="0" step="0.01" inputMode="decimal" placeholder="0" value={row.qty} onChange={(e) => setRows((current) => current.map((item, rowIndex) => rowIndex === index ? { ...item, qty: e.target.value } : item))} />
-                  <span className="w-7 shrink-0 text-xs font-bold text-text-muted">{ingredient?.unit ?? ''}</span>
+                <div className="flex items-center gap-2">
+                  <TextInput className="flex-1" type="number" min="0" step="0.01" inputMode="decimal" placeholder={`${labels.qty}…`} value={row.qty} onChange={(e) => setRows((current) => current.map((item, rowIndex) => rowIndex === index ? { ...item, qty: e.target.value } : item))} />
+                  <span className="w-12 shrink-0 text-center text-sm font-bold text-text-muted">{ingredient?.unit ?? ''}</span>
+                  <button type="button" aria-label={`${labels.delete} ${ingredient?.name ?? ''}`} className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-border bg-white text-danger" onClick={() => setRows((current) => current.filter((_, rowIndex) => rowIndex !== index))}>
+                    <Trash2 size={18} />
+                  </button>
                 </div>
-                <button type="button" aria-label={`${labels.delete} ${ingredient?.name ?? ''}`} className="grid h-12 place-items-center rounded-xl border border-border text-danger" onClick={() => setRows((current) => current.filter((_, rowIndex) => rowIndex !== index))}>
-                  <Trash2 size={18} />
-                </button>
               </div>
             );
           })}
