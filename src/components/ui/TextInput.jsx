@@ -34,7 +34,7 @@ export default function TextInput({
       <input
         type={isNumber ? 'text' : type}
         inputMode={isNumber ? (integer ? 'numeric' : 'decimal') : undefined}
-        className="min-h-12 w-full rounded-2xl border border-border bg-white px-4 font-semibold outline-none focus:border-primary"
+        className="h-12 w-full rounded-2xl border border-border bg-white px-4 font-semibold outline-none focus:border-primary"
         onChange={handleChange}
         {...props}
       />
