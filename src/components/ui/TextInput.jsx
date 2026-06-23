@@ -30,7 +30,7 @@ export default function TextInput({
 
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1 block text-sm font-bold text-text-secondary">{label}</span>
+      {label && <span className="mb-1 block text-sm font-bold text-text-secondary">{label}</span>}
       <input
         type={isNumber ? 'text' : type}
         inputMode={isNumber ? (integer ? 'numeric' : 'decimal') : undefined}
