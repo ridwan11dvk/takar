@@ -16,6 +16,15 @@ export default function Categories() {
   const [editing, setEditing] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  // Tampilkan detail error (name + message) supaya kegagalan tidak hilang diam-diam.
+  function showError(prefix, err) {
+    console.error(err);
+    const detail = err?.name ? `${err.name}: ${err.message ?? ''}` : String(err?.message ?? err);
+    setError(`${prefix} — ${detail}`);
+    setMessage('');
+  }
 
   useEffect(() => {
     ensureDefaultCategories().catch((error) => {
@@ -28,19 +37,24 @@ export default function Categories() {
     const name = forms[type];
     if (!name.trim()) return;
 
-    if (editing?.type === type) {
-      const result = await updateCategory(editing.id, { name });
-      if (!result.ok) {
-        setMessage(result.reason === 'DUPLICATE' ? labels.categoryDuplicate : labels.categoryInUse);
-        return;
+    try {
+      if (editing?.type === type) {
+        const result = await updateCategory(editing.id, { name });
+        if (!result.ok) {
+          setMessage(result.reason === 'DUPLICATE' ? labels.categoryDuplicate : labels.categoryInUse);
+          return;
+        }
+        setEditing(null);
+      } else {
+        await createCategory({ name, type });
       }
-      setEditing(null);
-    } else {
-      await createCategory({ name, type });
-    }
 
-    setForms((current) => ({ ...current, [type]: '' }));
-    setMessage(labels.initialDataSaved);
+      setForms((current) => ({ ...current, [type]: '' }));
+      setError('');
+      setMessage(labels.initialDataSaved);
+    } catch (err) {
+      showError(labels.saveFailed, err);
+    }
   }
 
   function handleEdit(category) {
@@ -56,8 +70,13 @@ export default function Categories() {
   }
 
   async function handleRestoreDefaults() {
-    await restoreDefaultCategories();
-    setMessage(labels.defaultCategoriesRestored);
+    try {
+      await restoreDefaultCategories();
+      setError('');
+      setMessage(labels.defaultCategoriesRestored);
+    } catch (err) {
+      showError(labels.restoreFailed, err);
+    }
   }
 
   function renderSection(title, type, categories) {
@@ -98,6 +117,7 @@ export default function Categories() {
         <h1 className="text-[22px] font-extrabold">{labels.categoriesTitle}</h1>
       </header>
       {message && <div className="rounded-2xl bg-[#EAF6EC] px-4 py-3 text-sm font-bold text-success">{message}</div>}
+      {error && <div className="rounded-2xl bg-[#FDECEC] px-4 py-3 text-sm font-bold text-danger">{error}</div>}
       <Button variant="secondary" onClick={handleRestoreDefaults}>{labels.restoreDefaultCategories}</Button>
       {renderSection(labels.ingredientCategories, CategoryType.INGREDIENT, ingredientCategories)}
       {renderSection(labels.menuCategories, CategoryType.MENU, menuCategories)}

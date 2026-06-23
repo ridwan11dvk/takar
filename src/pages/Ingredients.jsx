@@ -29,6 +29,7 @@ export default function Ingredients() {
     currentStock: '',
     minStock: '',
     avgCostPerUnit: '',
+    purchaseTotalPrice: '',
     lastPurchasePrice: '',
     note: '',
   });
@@ -73,7 +74,11 @@ export default function Ingredients() {
     if (editingId) {
       await updateIngredient(editingId, form);
     } else {
-      await createIngredient(form);
+      // Hitung harga modal per satuan otomatis dari total harga beli ÷ stok awal.
+      const qty = Number(form.currentStock) || 0;
+      const totalPrice = Number(form.purchaseTotalPrice) || 0;
+      const avgCostPerUnit = qty > 0 ? totalPrice / qty : 0;
+      await createIngredient({ ...form, avgCostPerUnit, lastPurchasePrice: totalPrice });
     }
     setForm({
       name: '',
@@ -82,6 +87,7 @@ export default function Ingredients() {
       currentStock: '',
       minStock: '',
       avgCostPerUnit: '',
+      purchaseTotalPrice: '',
       lastPurchasePrice: '',
       note: '',
     });
@@ -100,6 +106,7 @@ export default function Ingredients() {
       currentStock: String(ingredient.currentStock),
       minStock: String(ingredient.minStock),
       avgCostPerUnit: String(ingredient.avgCostPerUnit),
+      purchaseTotalPrice: '',
       lastPurchasePrice: String(ingredient.lastPurchasePrice),
       note: ingredient.note ?? '',
     });
@@ -134,10 +141,17 @@ export default function Ingredients() {
               <option value={Unit.PCS}>pcs</option>
             </SelectInput>
             <div className="grid grid-cols-2 gap-3">
-              <TextInput label={labels.currentStock} type="number" step="0.01" allowNegative value={form.currentStock} onChange={(e) => setForm({ ...form, currentStock: e.target.value })} />
-              <TextInput label={labels.minStock} type="number" step="0.01" value={form.minStock} onChange={(e) => setForm({ ...form, minStock: e.target.value })} />
+              <TextInput label={`${labels.initialStock} (${form.unit})`} type="number" step="0.01" allowNegative value={form.currentStock} onChange={(e) => setForm({ ...form, currentStock: e.target.value })} />
+              <TextInput label={`${labels.minStock} (${form.unit})`} type="number" step="0.01" value={form.minStock} onChange={(e) => setForm({ ...form, minStock: e.target.value })} />
             </div>
-            <TextInput label={`${labels.purchaseCostPerUnit} ${form.unit}`} type="number" step="0.01" value={form.avgCostPerUnit} onChange={(e) => setForm({ ...form, avgCostPerUnit: e.target.value })} />
+            <p className="-mt-1 text-xs font-semibold text-text-muted">{labels.initialStockHint}</p>
+            <TextInput label={labels.purchaseTotalPrice} type="number" step="0.01" value={form.purchaseTotalPrice} onChange={(e) => setForm({ ...form, purchaseTotalPrice: e.target.value })} />
+            <p className="-mt-1 text-xs font-semibold text-text-muted">{labels.purchaseTotalPriceHint}</p>
+            {Number(form.currentStock) > 0 && Number(form.purchaseTotalPrice) > 0 && (
+              <div className="rounded-2xl bg-surface-alt px-4 py-2 text-sm font-bold">
+                {`${labels.avgCostPerUnitShort} ${form.unit}`}: {formatRupiah(Number(form.purchaseTotalPrice) / Number(form.currentStock))}
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-2">
               <Button type="submit" className="w-full" disabled={!form.name.trim()}>{labels.save}</Button>
               <button type="button" className="rounded-2xl border border-border font-bold" onClick={() => { setEditingId(null); setShowForm(false); }}>{labels.cancel}</button>
@@ -228,7 +242,7 @@ export default function Ingredients() {
         })}
       </div>
       {editingId && (
-        <Modal title={labels.editIngredient} onClose={() => { setEditingId(null); setForm({ name: '', category: categoryOptions[0]?.name ?? 'Kopi', unit: Unit.GRAM, currentStock: '', minStock: '', avgCostPerUnit: '', lastPurchasePrice: '', note: '' }); }}>
+        <Modal title={labels.editIngredient} onClose={() => { setEditingId(null); setForm({ name: '', category: categoryOptions[0]?.name ?? 'Kopi', unit: Unit.GRAM, currentStock: '', minStock: '', avgCostPerUnit: '', purchaseTotalPrice: '', lastPurchasePrice: '', note: '' }); }}>
           <form className="grid gap-3" onSubmit={handleCreate}>
             <TextInput label={labels.ingredientName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             <SelectInput label={labels.category} value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
@@ -240,9 +254,10 @@ export default function Ingredients() {
               <option value={Unit.PCS}>pcs</option>
             </SelectInput>
             <div className="grid grid-cols-2 gap-3">
-              <TextInput label={labels.currentStock} type="number" step="0.01" allowNegative value={form.currentStock} onChange={(e) => setForm({ ...form, currentStock: e.target.value })} />
-              <TextInput label={labels.minStock} type="number" step="0.01" value={form.minStock} onChange={(e) => setForm({ ...form, minStock: e.target.value })} />
+              <TextInput label={`${labels.currentStock} (${form.unit})`} type="number" step="0.01" allowNegative value={form.currentStock} onChange={(e) => setForm({ ...form, currentStock: e.target.value })} />
+              <TextInput label={`${labels.minStock} (${form.unit})`} type="number" step="0.01" value={form.minStock} onChange={(e) => setForm({ ...form, minStock: e.target.value })} />
             </div>
+            <p className="-mt-1 text-xs font-semibold text-text-muted">{labels.currentStockHint}</p>
             <div className="rounded-2xl border border-border bg-surface-alt px-4 py-3">
               <span className="block text-sm font-bold text-text-secondary">{`${labels.avgCostPerUnitShort} ${form.unit}`}</span>
               <span className="mt-1 block text-lg font-extrabold">{formatRupiah(Number(form.avgCostPerUnit) || 0)}</span>

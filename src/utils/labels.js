@@ -146,6 +146,11 @@ export const labels = {
   ingredientUsedWarning: 'Bahan masih dipakai di resep. Hapus dari resep dulu.',
   ingredientName: 'Nama bahan',
   currentStock: 'Stok saat ini',
+  currentStockHint: 'Jumlah bahan yang ada sekarang',
+  initialStock: 'Stok awal',
+  initialStockHint: 'Jumlah yang kamu beli pertama kali',
+  purchaseTotalPrice: 'Total harga beli',
+  purchaseTotalPriceHint: 'Harga total untuk jumlah di atas (app hitung harga per satuannya)',
   minStock: 'Stok minimum',
   avgCostPerUnit: 'Harga rata-rata per unit',
   purchaseCostPerUnit: 'Harga beli per',
@@ -154,4 +159,6 @@ export const labels = {
   initialDataSaved: 'Data tersimpan',
   reset: 'Reset',
   back: 'Kembali',
+  saveFailed: 'Gagal menyimpan',
+  restoreFailed: 'Gagal memulihkan kategori',
 };

@@ -5,6 +5,7 @@ import Badge from '../components/ui/Badge.jsx';
 import Button from '../components/ui/Button.jsx';
 import Card from '../components/ui/Card.jsx';
 import { getDashboardSummary } from '../services/reportService.js';
+import { getSettings } from '../services/settingsService.js';
 import { downloadBackup, exportBackup } from '../services/backupService.js';
 import { getStockStatus } from '../domain/inventory.js';
 import { formatQty, formatRupiah } from '../utils/format.js';
@@ -12,6 +13,7 @@ import { labels } from '../utils/labels.js';
 
 export default function Dashboard() {
   const summary = useLiveQuery(() => getDashboardSummary(), []);
+  const settings = useLiveQuery(() => getSettings(), []);
 
   async function handleExport() {
     downloadBackup(await exportBackup());
@@ -33,7 +35,7 @@ export default function Dashboard() {
             T
           </div>
           <div>
-            <p className="text-xl font-extrabold">{labels.appName} · {labels.storeName}</p>
+            <p className="text-xl font-extrabold">{labels.appName} · {settings?.storeName ?? labels.storeName}</p>
             <p className="text-xs font-semibold text-text-muted">{labels.backupReminder}</p>
           </div>
         </div>
