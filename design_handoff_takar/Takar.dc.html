@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    ::-webkit-scrollbar { width: 0; height: 0; }
+  </style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:52px;background:#E6E1D8;font-family:'Plus Jakarta Sans',sans-serif;color:#2A2521;">
+
+  <div style="margin-bottom:40px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="width:34px;height:34px;border-radius:10px;background:#C75C3C;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px;">T</div>
+      <div style="font-size:26px;font-weight:800;letter-spacing:-.3px;">Takar — Design System &amp; 3 Layar Inti</div>
+    </div>
+    <div style="font-size:15px;color:#7A7066;margin-top:6px;margin-left:46px;">Inventory &amp; HPP tracker untuk UMKM F&amp;B · mobile-first 390px · contoh brand Latteva</div>
+  </div>
+
+  <!-- ============ DESIGN TOKENS & COMPONENTS ============ -->
+  <div style="font-size:13px;font-weight:700;letter-spacing:1.2px;color:#9A8F82;text-transform:uppercase;margin-bottom:16px;">Design Tokens &amp; Komponen Bersama</div>
+  <div style="display:flex;gap:28px;align-items:flex-start;margin-bottom:52px;">
+
+    <!-- Colors + type -->
+    <div style="flex:none;width:560px;background:#fff;border-radius:22px;padding:28px;box-shadow:0 8px 24px rgba(70,50,35,.08);">
+      <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:14px;">WARNA</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:10px;">
+        <sc-for list="{{ swatches }}" as="s" hint-placeholder-count="8">
+          <div>
+            <div style="height:54px;border-radius:14px;background:{{ s.hex }};border:1px solid rgba(0,0,0,.06);"></div>
+            <div style="font-size:12px;font-weight:700;margin-top:7px;">{{ s.name }}</div>
+            <div style="font-size:11px;color:#9A8F82;">{{ s.hex }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="height:1px;background:#EFE7DD;margin:22px 0;"></div>
+      <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:14px;">TIPOGRAFI · Plus Jakarta Sans</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:34px;font-weight:800;letter-spacing:-.5px;">Rp 250.000</span><span style="font-size:12px;color:#9A8F82;">Angka utama · 34/800</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:22px;font-weight:700;">Judul Halaman</span><span style="font-size:12px;color:#9A8F82;">22/700</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:15px;font-weight:600;">Label &amp; body</span><span style="font-size:12px;color:#9A8F82;">15/600</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:12px;font-weight:500;color:#7A7066;">Teks sekunder kecil</span><span style="font-size:12px;color:#9A8F82;">12/500</span></div>
+      </div>
+      <div style="height:1px;background:#EFE7DD;margin:22px 0;"></div>
+      <div style="display:flex;gap:30px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:12px;">RADIUS</div>
+          <div style="display:flex;gap:10px;align-items:flex-end;">
+            <div style="width:40px;height:40px;background:#F3ECE3;border-radius:10px;"></div>
+            <div style="width:46px;height:46px;background:#F3ECE3;border-radius:16px;"></div>
+            <div style="width:52px;height:52px;background:#F3ECE3;border-radius:22px;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:12px;">SPACING · 4pt</div>
+          <div style="display:flex;gap:8px;align-items:flex-end;height:46px;">
+            <div style="width:8px;height:8px;background:#C75C3C;border-radius:3px;"></div>
+            <div style="width:12px;height:12px;background:#C75C3C;border-radius:3px;"></div>
+            <div style="width:16px;height:16px;background:#C75C3C;border-radius:4px;"></div>
+            <div style="width:24px;height:24px;background:#C75C3C;border-radius:5px;"></div>
+            <div style="width:32px;height:32px;background:#C75C3C;border-radius:6px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Components -->
+    <div style="flex:none;width:420px;background:#fff;border-radius:22px;padding:28px;box-shadow:0 8px 24px rgba(70,50,35,.08);display:flex;flex-direction:column;gap:22px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:12px;">STATUS BADGE</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span style="display:inline-flex;align-items:center;gap:6px;background:#E6F4EA;color:#15803D;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;"><span style="width:8px;height:8px;border-radius:50%;background:#15803D;"></span>Aman</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;background:#FCEFD6;color:#B45309;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;"><span style="width:8px;height:8px;border-radius:50%;background:#D97706;"></span>Menipis</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;background:#FBE6E6;color:#DC2626;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;"><span style="width:8px;height:8px;border-radius:50%;background:#DC2626;"></span>Habis</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:12px;">STAT CARD</div>
+        <div style="background:#FAF6F0;border-radius:18px;padding:16px;border:1px solid #F0E8DE;">
+          <div style="font-size:13px;color:#7A7066;font-weight:600;">Penjualan hari ini</div>
+          <div style="font-size:30px;font-weight:800;letter-spacing:-.5px;margin-top:2px;">Rp 250.000</div>
+          <div style="font-size:13px;color:#15803D;font-weight:700;margin-top:2px;">Untung kotor Rp 140.000</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:12px;">QTY STEPPER</div>
+        <div style="display:inline-flex;align-items:center;gap:14px;background:#F3ECE3;border-radius:14px;padding:6px;">
+          <div style="width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#C75C3C;box-shadow:0 1px 2px rgba(0,0,0,.06);">−</div>
+          <span style="font-size:19px;font-weight:800;min-width:20px;text-align:center;">2</span>
+          <div style="width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#C75C3C;box-shadow:0 1px 2px rgba(0,0,0,.06);">+</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#9A8F82;letter-spacing:.5px;margin-bottom:12px;">PRIMARY BUTTON</div>
+        <div style="height:54px;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(199,92,60,.3);">Simpan Penjualan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LAYAR 1 — PENJUALAN CEPAT ============ -->
+  <div style="font-size:13px;font-weight:700;letter-spacing:1.2px;color:#9A8F82;text-transform:uppercase;margin-bottom:16px;">Layar 1 — Penjualan Cepat</div>
+  <div style="display:flex;gap:36px;align-items:flex-start;margin-bottom:52px;">
+
+    <!-- 1a Keranjang kosong -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Keranjang kosong</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="font-size:20px;font-weight:800;">Penjualan</div>
+          <div style="font-size:13px;font-weight:700;color:#7A7066;background:#fff;padding:7px 12px;border-radius:12px;border:1px solid #EFE7DD;">Total: Rp 0</div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 16px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <sc-for list="{{ menus }}" as="m" hint-placeholder-count="6">
+              <div style="background:#fff;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;box-shadow:0 2px 8px rgba(70,50,35,.05);min-height:118px;">
+                <div style="font-size:15px;font-weight:700;line-height:1.2;">{{ m.name }}</div>
+                <sc-if value="{{ m.noRecipe }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:10px;font-weight:700;color:#B45309;background:#FCEFD6;padding:2px 7px;border-radius:6px;align-self:flex-start;">resep belum dibuat</span>
+                </sc-if>
+                <div style="font-size:14px;color:#7A7066;font-weight:600;">{{ m.price }}</div>
+                <div style="margin-top:auto;display:flex;justify-content:flex-end;">
+                  <div style="width:46px;height:46px;border-radius:14px;background:#C75C3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;line-height:1;box-shadow:0 4px 10px rgba(199,92,60,.28);">+</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex:none;padding:14px 16px 14px;background:#FAF6F0;border-top:1px solid #EFE7DD;">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:#A89E94;font-size:13px;font-weight:600;margin-bottom:12px;">Keranjang masih kosong · tap + pada menu</div>
+          <div style="height:54px;border-radius:16px;background:#E7DFD4;color:#B3A89B;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;">Simpan Penjualan</div>
+        </div>
+        <dc-import name="BottomNav" active="Penjualan" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+
+    <!-- 1b Ada isi keranjang -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Ada isi keranjang</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="font-size:20px;font-weight:800;">Penjualan</div>
+          <div style="font-size:13px;font-weight:700;color:#C75C3C;background:#fff;padding:7px 12px;border-radius:12px;border:1px solid #F1D9CE;">Total: Rp 51.000</div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 16px 12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <sc-for list="{{ menus }}" as="m" hint-placeholder-count="6">
+              <div style="background:#fff;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;box-shadow:0 2px 8px rgba(70,50,35,.05);min-height:118px;">
+                <div style="font-size:15px;font-weight:700;line-height:1.2;">{{ m.name }}</div>
+                <sc-if value="{{ m.noRecipe }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:10px;font-weight:700;color:#B45309;background:#FCEFD6;padding:2px 7px;border-radius:6px;align-self:flex-start;">resep belum dibuat</span>
+                </sc-if>
+                <div style="font-size:14px;color:#7A7066;font-weight:600;">{{ m.price }}</div>
+                <div style="margin-top:auto;display:flex;justify-content:flex-end;">
+                  <div style="width:46px;height:46px;border-radius:14px;background:#C75C3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;line-height:1;box-shadow:0 4px 10px rgba(199,92,60,.28);">+</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex:none;background:#fff;border-top:1px solid #EFE7DD;border-radius:22px 22px 0 0;padding:14px 16px 12px;box-shadow:0 -6px 18px rgba(60,40,25,.06);">
+          <div style="font-size:12px;font-weight:700;color:#9A8F82;letter-spacing:.4px;margin-bottom:10px;">KERANJANG (2)</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+            <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;">Kopi Latte</div><div style="font-size:12px;color:#9A8F82;">Rp 18.000</div></div>
+            <div style="display:inline-flex;align-items:center;gap:10px;background:#F3ECE3;border-radius:12px;padding:4px;">
+              <div style="width:34px;height:34px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#C75C3C;">−</div>
+              <span style="font-size:16px;font-weight:800;min-width:16px;text-align:center;">2</span>
+              <div style="width:34px;height:34px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#C75C3C;">+</div>
+            </div>
+            <div style="font-size:15px;font-weight:800;width:74px;text-align:right;">Rp 36.000</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;">
+            <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;">Roti Bakar</div><div style="font-size:12px;color:#9A8F82;">Rp 15.000</div></div>
+            <div style="display:inline-flex;align-items:center;gap:10px;background:#F3ECE3;border-radius:12px;padding:4px;">
+              <div style="width:34px;height:34px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#C75C3C;">−</div>
+              <span style="font-size:16px;font-weight:800;min-width:16px;text-align:center;">1</span>
+              <div style="width:34px;height:34px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#C75C3C;">+</div>
+            </div>
+            <div style="font-size:15px;font-weight:800;width:74px;text-align:right;">Rp 15.000</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-top:12px;border-top:1px dashed #E4DACE;">
+            <span style="font-size:14px;font-weight:600;color:#7A7066;">Total</span>
+            <span style="font-size:26px;font-weight:800;letter-spacing:-.5px;">Rp 51.000</span>
+          </div>
+          <div style="height:54px;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(199,92,60,.3);">Simpan Penjualan</div>
+        </div>
+        <dc-import name="BottomNav" active="Penjualan" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+
+    <!-- 1c Warning stok kurang -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Peringatan stok kurang</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="font-size:20px;font-weight:800;">Penjualan</div>
+          <div style="font-size:13px;font-weight:700;color:#C75C3C;background:#fff;padding:7px 12px;border-radius:12px;border:1px solid #F1D9CE;">Total: Rp 71.000</div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 16px 12px;">
+          <div style="background:#FCF4DD;border:1px solid #F0DCA0;border-radius:16px;padding:14px;margin-bottom:14px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px;"><path d="M10.3 3.9 1.8 18a1.5 1.5 0 0 0 1.3 2.3h17.8a1.5 1.5 0 0 0 1.3-2.3L13.7 3.9a1.5 1.5 0 0 0-2.6 0zM12 9v4M12 17h.01"></path></svg>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#7A4D11;line-height:1.35;">Stok bahan kurang. Tetap simpan? Stok akan minus.</div>
+                <div style="font-size:12px;color:#9A7A3E;margin-top:3px;">Matcha Latte — susu UHT tidak cukup.</div>
+                <div style="display:flex;gap:10px;margin-top:12px;">
+                  <div style="flex:1;height:44px;border-radius:12px;background:#B45309;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;">Tetap simpan</div>
+                  <div style="flex:1;height:44px;border-radius:12px;background:#fff;border:1px solid #E8D5A8;color:#7A4D11;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;">Batal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <sc-for list="{{ menus }}" as="m" hint-placeholder-count="6">
+              <div style="background:#fff;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;box-shadow:0 2px 8px rgba(70,50,35,.05);min-height:118px;">
+                <div style="font-size:15px;font-weight:700;line-height:1.2;">{{ m.name }}</div>
+                <sc-if value="{{ m.noRecipe }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:10px;font-weight:700;color:#B45309;background:#FCEFD6;padding:2px 7px;border-radius:6px;align-self:flex-start;">resep belum dibuat</span>
+                </sc-if>
+                <div style="font-size:14px;color:#7A7066;font-weight:600;">{{ m.price }}</div>
+                <div style="margin-top:auto;display:flex;justify-content:flex-end;">
+                  <div style="width:46px;height:46px;border-radius:14px;background:#C75C3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;line-height:1;box-shadow:0 4px 10px rgba(199,92,60,.28);">+</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex:none;padding:14px 16px 12px;background:#fff;border-top:1px solid #EFE7DD;border-radius:22px 22px 0 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:14px;font-weight:600;color:#7A7066;">Total</span>
+            <span style="font-size:26px;font-weight:800;letter-spacing:-.5px;">Rp 71.000</span>
+          </div>
+          <div style="height:54px;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(199,92,60,.3);">Simpan Penjualan</div>
+        </div>
+        <dc-import name="BottomNav" active="Penjualan" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LAYAR 2 — DASHBOARD ============ -->
+  <div style="font-size:13px;font-weight:700;letter-spacing:1.2px;color:#9A8F82;text-transform:uppercase;margin-bottom:16px;">Layar 2 — Dashboard</div>
+  <div style="display:flex;gap:36px;align-items:flex-start;margin-bottom:52px;">
+
+    <!-- 2a Hari produktif -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Hari produktif</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:28px;height:28px;border-radius:8px;background:#C75C3C;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;">T</div><div style="font-size:18px;font-weight:800;">Takar · Latteva</div></div>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A7066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 6.6 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H1a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 2.6 6.6a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H7a1.6 1.6 0 0 0 1-1.5V1a2 2 0 0 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V7a1.6 1.6 0 0 0 1.5 1H23a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"></path></svg>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 16px 16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:#fff;border-radius:22px;padding:20px;box-shadow:0 2px 10px rgba(70,50,35,.06);">
+            <div style="font-size:13px;color:#7A7066;font-weight:600;">Penjualan hari ini</div>
+            <div style="font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.05;margin-top:4px;">Rp 250.000</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#15803D;font-weight:700;margin-top:8px;background:#E6F4EA;padding:5px 11px;border-radius:999px;">Untung kotor Rp 140.000</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(70,50,35,.05);"><div style="font-size:13px;color:#7A7066;font-weight:600;">Terjual</div><div style="font-size:28px;font-weight:800;margin-top:2px;">18</div><div style="font-size:12px;color:#9A8F82;">porsi</div></div>
+            <div style="background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(70,50,35,.05);"><div style="font-size:13px;color:#7A7066;font-weight:600;">Waste</div><div style="font-size:28px;font-weight:800;margin-top:2px;color:#DC2626;">Rp 12.000</div><div style="font-size:12px;color:#9A8F82;">hari ini</div></div>
+          </div>
+          <div style="background:#fff;border-radius:20px;padding:16px 16px 8px;box-shadow:0 2px 10px rgba(70,50,35,.06);border:1px solid #FBEFD0;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a1.5 1.5 0 0 0 1.3 2.3h17.8a1.5 1.5 0 0 0 1.3-2.3L13.7 3.9a1.5 1.5 0 0 0-2.6 0zM12 9v4M12 17h.01"></path></svg>
+              <div style="font-size:16px;font-weight:800;">Bahan menipis (3)</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #F4ECE2;"><div><div style="font-size:15px;font-weight:700;">Susu UHT</div><div style="font-size:12px;color:#9A8F82;">sisa 200 ml</div></div><span style="display:inline-flex;align-items:center;gap:6px;background:#FCEFD6;color:#B45309;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#D97706;"></span>Menipis</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #F4ECE2;"><div><div style="font-size:15px;font-weight:700;">Cup</div><div style="font-size:12px;color:#9A8F82;">sisa 5 pcs</div></div><span style="display:inline-flex;align-items:center;gap:6px;background:#FCEFD6;color:#B45309;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#D97706;"></span>Menipis</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #F4ECE2;"><div><div style="font-size:15px;font-weight:700;">Kopi arabica</div><div style="font-size:12px;color:#9A8F82;">sisa 80 gram</div></div><span style="display:inline-flex;align-items:center;gap:6px;background:#FCEFD6;color:#B45309;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#D97706;"></span>Menipis</span></div>
+          </div>
+          <div style="height:56px;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 14px rgba(199,92,60,.3);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Penjualan Cepat</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9A8F82;padding:0 4px;"><span>Terakhir backup 3 hari lalu</span><span style="font-weight:700;color:#C75C3C;">Export data</span></div>
+        </div>
+        <dc-import name="BottomNav" active="Dashboard" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+
+    <!-- 2b Belum ada penjualan -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Belum ada penjualan hari ini</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:28px;height:28px;border-radius:8px;background:#C75C3C;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;">T</div><div style="font-size:18px;font-weight:800;">Takar · Latteva</div></div>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A7066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.5 12a7.5 7.5 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.5 7.5 0 0 0-2-1.2L14.6 2h-4l-.4 2.6a7.5 7.5 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7.5 7.5 0 0 0 5.7 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1c.6.5 1.3.9 2 1.2l.4 2.6h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"></path></svg>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 16px 16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:#fff;border-radius:22px;padding:20px;box-shadow:0 2px 10px rgba(70,50,35,.06);">
+            <div style="font-size:13px;color:#7A7066;font-weight:600;">Penjualan hari ini</div>
+            <div style="font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.05;margin-top:4px;color:#C7BCAE;">Rp 0</div>
+          </div>
+          <div style="background:#fff;border-radius:22px;padding:34px 24px;box-shadow:0 2px 10px rgba(70,50,35,.06);display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;">
+            <div style="width:64px;height:64px;border-radius:20px;background:#F6EEE4;display:flex;align-items:center;justify-content:center;margin-bottom:4px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C75C3C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.2 11.2A1 1 0 0 0 8.2 16h8.8a1 1 0 0 0 1-.8L20 7H6M9 20a1 1 0 1 0 .001 0M16 20a1 1 0 1 0 .001 0"></path></svg></div>
+            <div style="font-size:18px;font-weight:800;">Belum ada penjualan hari ini</div>
+            <div style="font-size:14px;color:#7A7066;line-height:1.4;">Yuk mulai catat penjualan pertamamu hari ini.</div>
+          </div>
+          <div style="height:56px;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 14px rgba(199,92,60,.3);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Penjualan Cepat</div>
+        </div>
+        <dc-import name="BottomNav" active="Dashboard" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+
+    <!-- 2c Semua stok aman -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Semua stok aman</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:28px;height:28px;border-radius:8px;background:#C75C3C;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;">T</div><div style="font-size:18px;font-weight:800;">Takar · Latteva</div></div>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A7066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.5 12a7.5 7.5 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.5 7.5 0 0 0-2-1.2L14.6 2h-4l-.4 2.6a7.5 7.5 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7.5 7.5 0 0 0 5.7 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1c.6.5 1.3.9 2 1.2l.4 2.6h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"></path></svg>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 16px 16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:#fff;border-radius:22px;padding:20px;box-shadow:0 2px 10px rgba(70,50,35,.06);">
+            <div style="font-size:13px;color:#7A7066;font-weight:600;">Penjualan hari ini</div>
+            <div style="font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.05;margin-top:4px;">Rp 318.000</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#15803D;font-weight:700;margin-top:8px;background:#E6F4EA;padding:5px 11px;border-radius:999px;">Untung kotor Rp 176.000</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(70,50,35,.05);"><div style="font-size:13px;color:#7A7066;font-weight:600;">Terjual</div><div style="font-size:28px;font-weight:800;margin-top:2px;">24</div><div style="font-size:12px;color:#9A8F82;">porsi</div></div>
+            <div style="background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(70,50,35,.05);"><div style="font-size:13px;color:#7A7066;font-weight:600;">Waste</div><div style="font-size:28px;font-weight:800;margin-top:2px;">Rp 0</div><div style="font-size:12px;color:#9A8F82;">hari ini</div></div>
+          </div>
+          <div style="background:#EAF6EC;border:1px solid #C9E7CF;border-radius:20px;padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;">
+            <div style="width:56px;height:56px;border-radius:18px;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></div>
+            <div style="font-size:18px;font-weight:800;color:#15803D;">Semua stok aman</div>
+            <div style="font-size:13px;color:#5A8C66;">Tidak ada bahan yang menipis atau habis.</div>
+          </div>
+          <div style="height:56px;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 14px rgba(199,92,60,.3);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Penjualan Cepat</div>
+        </div>
+        <dc-import name="BottomNav" active="Dashboard" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LAYAR 3 — BAHAN BAKU ============ -->
+  <div style="font-size:13px;font-weight:700;letter-spacing:1.2px;color:#9A8F82;text-transform:uppercase;margin-bottom:16px;">Layar 3 — Bahan Baku</div>
+  <div style="display:flex;gap:36px;align-items:flex-start;">
+
+    <!-- 3a List normal -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">List normal (termasuk stok minus)</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="font-size:20px;font-weight:800;">Bahan Baku</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:#C75C3C;color:#fff;font-size:14px;font-weight:700;padding:9px 14px;border-radius:13px;box-shadow:0 4px 10px rgba(199,92,60,.28);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Tambah</div>
+        </div>
+        <div style="padding:4px 16px 10px;flex:none;">
+          <div style="display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #EFE7DD;border-radius:14px;padding:11px 14px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A89E94" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <span style="font-size:14px;color:#A89E94;">Cari bahan…</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;overflow:hidden;">
+            <span style="flex:none;background:#C75C3C;color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;">Semua</span>
+            <span style="flex:none;background:#fff;color:#7A7066;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid #EFE7DD;">Kopi</span>
+            <span style="flex:none;background:#fff;color:#7A7066;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid #EFE7DD;">Dairy</span>
+            <span style="flex:none;background:#fff;color:#7A7066;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid #EFE7DD;">Kemasan</span>
+          </div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:2px 16px 16px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ bahan }}" as="b" hint-placeholder-count="7">
+            <div style="background:#fff;border-radius:16px;padding:14px;box-shadow:0 2px 8px rgba(70,50,35,.05);display:flex;align-items:center;gap:12px;">
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:16px;font-weight:700;">{{ b.name }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;background:{{ b.bg }};color:{{ b.fg }};font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:{{ b.dot }};"></span>{{ b.st }}</span>
+                </div>
+                <div style="font-size:19px;font-weight:800;margin-top:3px;color:{{ b.stokColor }};">{{ b.stok }}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px;flex:none;">
+                <div style="height:36px;padding:0 14px;border-radius:10px;background:#F3ECE3;color:#C75C3C;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">Restock</div>
+                <div style="height:36px;padding:0 14px;border-radius:10px;background:#fff;border:1px solid #EFE7DD;color:#7A7066;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">Edit</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <dc-import name="BottomNav" active="Bahan" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+
+    <!-- 3b List kosong -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">List kosong (belum ada bahan)</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="font-size:20px;font-weight:800;">Bahan Baku</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:#C75C3C;color:#fff;font-size:14px;font-weight:700;padding:9px 14px;border-radius:13px;box-shadow:0 4px 10px rgba(199,92,60,.28);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Tambah</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 32px;gap:10px;">
+          <div style="width:84px;height:84px;border-radius:26px;background:#F1E9DF;display:flex;align-items:center;justify-content:center;margin-bottom:6px;"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#C0A98F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"></path></svg></div>
+          <div style="font-size:19px;font-weight:800;">Belum ada bahan</div>
+          <div style="font-size:14px;color:#7A7066;line-height:1.45;">Tambah bahan pertamamu untuk mulai memantau stok dan modal per porsi.</div>
+          <div style="margin-top:14px;height:54px;width:100%;border-radius:16px;background:#C75C3C;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 14px rgba(199,92,60,.3);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Tambah Bahan</div>
+        </div>
+        <dc-import name="BottomNav" active="Bahan" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+
+    <!-- 3c Search kosong -->
+    <div style="flex:none;width:390px;">
+      <div style="font-size:13px;font-weight:600;color:#6B6258;margin-bottom:12px;">Hasil pencarian kosong</div>
+      <div style="width:390px;height:812px;background:#FAF6F0;border-radius:36px;border:1px solid #EFE7DD;box-shadow:0 16px 40px rgba(60,40,25,.14);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex:none;">
+          <div style="font-size:20px;font-weight:800;">Bahan Baku</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:#C75C3C;color:#fff;font-size:14px;font-weight:700;padding:9px 14px;border-radius:13px;box-shadow:0 4px 10px rgba(199,92,60,.28);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Tambah</div>
+        </div>
+        <div style="padding:4px 16px 10px;flex:none;">
+          <div style="display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #E4C7BC;border-radius:14px;padding:11px 14px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C75C3C" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <span style="font-size:14px;color:#2A2521;font-weight:600;">cokelat bubuk</span>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 32px;gap:8px;">
+          <div style="width:72px;height:72px;border-radius:22px;background:#F1E9DF;display:flex;align-items:center;justify-content:center;margin-bottom:4px;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C0A98F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg></div>
+          <div style="font-size:18px;font-weight:800;">Bahan tidak ditemukan</div>
+          <div style="font-size:14px;color:#7A7066;line-height:1.45;">Coba kata kunci lain, atau tambah “cokelat bubuk” sebagai bahan baru.</div>
+        </div>
+        <dc-import name="BottomNav" active="Bahan" hint-size="100%,64px"></dc-import>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const menus = [
+      { name: 'Kopi Latte', price: 'Rp 18.000' },
+      { name: 'Matcha Latte', price: 'Rp 20.000' },
+      { name: 'Es Teh', price: 'Rp 10.000' },
+      { name: 'Roti Bakar', price: 'Rp 15.000' },
+      { name: 'Spaghetti Bolognese', price: 'Rp 25.000', noRecipe: true },
+      { name: 'Mac n Cheese', price: 'Rp 22.000' },
+    ];
+    const AMAN = { bg: '#E6F4EA', fg: '#15803D', dot: '#15803D' };
+    const MENIPIS = { bg: '#FCEFD6', fg: '#B45309', dot: '#D97706' };
+    const HABIS = { bg: '#FBE6E6', fg: '#DC2626', dot: '#DC2626' };
+    const bahan = [
+      { name: 'Susu UHT', stok: '820 ml', st: 'Aman', ...AMAN, stokColor: '#2A2521' },
+      { name: 'Kopi arabica', stok: '80 gram', st: 'Menipis', ...MENIPIS, stokColor: '#2A2521' },
+      { name: 'Cup', stok: '5 pcs', st: 'Menipis', ...MENIPIS, stokColor: '#2A2521' },
+      { name: 'Es batu', stok: '0', st: 'Habis', ...HABIS, stokColor: '#DC2626' },
+      { name: 'Gula', stok: '1.500 gram', st: 'Aman', ...AMAN, stokColor: '#2A2521' },
+      { name: 'Macaroni', stok: '300 gram', st: 'Menipis', ...MENIPIS, stokColor: '#2A2521' },
+      { name: 'Sirup Vanilla', stok: '−40 ml', st: 'Minus', ...HABIS, stokColor: '#DC2626' },
+    ];
+    const swatches = [
+      { name: 'Primary', hex: '#C75C3C' },
+      { name: 'Background', hex: '#FAF6F0' },
+      { name: 'Surface', hex: '#FFFFFF' },
+      { name: 'Teks', hex: '#2A2521' },
+      { name: 'Aman', hex: '#15803D' },
+      { name: 'Menipis', hex: '#D97706' },
+      { name: 'Habis', hex: '#DC2626' },
+      { name: 'Garis', hex: '#EFE7DD' },
+    ];
+    return { menus, bahan, swatches };
+  }
+}
+</script>
+</body>
+</html>
