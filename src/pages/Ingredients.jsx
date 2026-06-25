@@ -153,7 +153,7 @@ export default function Ingredients() {
     <div className="space-y-4 py-4">
       <header className="flex h-14 items-center justify-between">
         <h1 className="text-[22px] font-extrabold">{labels.ingredientsTitle}</h1>
-        <Button className="min-h-10 rounded-full px-4 text-sm" onClick={() => { setEditingId(null); setShowForm((value) => !value); }}>{labels.addIngredient}</Button>
+        <Button className="min-h-10 rounded-full px-4 text-sm" onClick={() => { setEditingId(null); setShowForm(true); }}>{labels.addIngredient}</Button>
       </header>
 
       {message && <div className="rounded-2xl bg-[#EAF6EC] px-4 py-3 text-sm font-bold text-success">{message}</div>}
@@ -212,7 +212,7 @@ export default function Ingredients() {
       </div>
 
       {showForm && (
-        <Card>
+        <Modal title={labels.addIngredient} onClose={() => { setEditingId(null); setShowForm(false); }}>
           <form className="grid gap-3" onSubmit={handleCreate}>
             <TextInput label={labels.ingredientName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             <SelectInput label={labels.category} value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
@@ -240,7 +240,7 @@ export default function Ingredients() {
               <button type="button" className="rounded-2xl border border-border font-bold" onClick={() => { setEditingId(null); setShowForm(false); }}>{labels.cancel}</button>
             </div>
           </form>
-        </Card>
+        </Modal>
       )}
 
       {activeSection === 'stock' && (

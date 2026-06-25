@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import Ingredients from './Ingredients.jsx';
@@ -56,5 +56,17 @@ describe('Ingredients page', () => {
     expect(within(sections).getByRole('tab', { name: labels.stockTabStock })).toBeInTheDocument();
     expect(within(sections).getByRole('tab', { name: labels.stockTabHpp })).toBeInTheDocument();
     expect(within(sections).getByRole('tab', { name: labels.stockTabActivity })).toBeInTheDocument();
+  });
+
+  it('opens the add ingredient form in a modal from the header action', () => {
+    renderIngredients();
+
+    expect(screen.queryByRole('dialog', { name: labels.addIngredient })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: labels.addIngredient }));
+
+    const modal = screen.getByRole('dialog', { name: labels.addIngredient });
+    expect(within(modal).getByLabelText(labels.ingredientName)).toBeInTheDocument();
+    expect(within(modal).getByRole('button', { name: labels.save })).toBeInTheDocument();
   });
 });
