@@ -72,6 +72,44 @@ describe('inventory domain logic', () => {
     expect(calculateMenuHpp({ recipes, ingredients })).toBe(5400);
   });
 
+  it('adds optional per-portion operating costs into menu HPP', () => {
+    const recipes = [
+      { ingredientId: 1, qty: 5 },
+      { ingredientId: 2, qty: 1 },
+    ];
+    const ingredients = [
+      { id: 1, avgCostPerUnit: 2000 },
+      { id: 2, avgCostPerUnit: 800 },
+    ];
+    const menu = {
+      packagingCost: 500,
+      utilityCost: 300,
+      marketplaceCost: 1000,
+      otherCost: 200,
+    };
+
+    expect(calculateMenuHpp({ recipes, ingredients, menu })).toBe(12800);
+  });
+
+  it('includes optional menu operating costs in sale HPP and profit snapshots', () => {
+    const menus = [
+      { id: 1, name: 'Es Kopi Susu', sellingPrice: 18000, packagingCost: 500, utilityCost: 300, marketplaceCost: 1000, otherCost: 200 },
+    ];
+    const recipes = [{ menuId: 1, ingredientId: 1, qty: 5, unit: 'gram' }];
+    const ingredients = [{ id: 1, name: 'Kopi bubuk', currentStock: 100, unit: 'gram', avgCostPerUnit: 2000 }];
+
+    const draft = calculateSaleDraft({
+      cart: [{ menuId: 1, qty: 2 }],
+      menus,
+      recipes,
+      ingredients,
+    });
+
+    expect(draft.items[0]).toMatchObject({ hppAtSale: 12000, profitAtSale: 12000 });
+    expect(draft.totalHpp).toBe(24000);
+    expect(draft.grossProfit).toBe(12000);
+  });
+
   it('builds a sale draft with snapshots, totals, and stock warnings', () => {
     const menus = [
       { id: 1, name: 'Kopi Latte', sellingPrice: 18000 },

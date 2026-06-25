@@ -1,15 +1,10 @@
 import { Link } from 'react-router-dom';
-import { ChefHat, ClipboardCheck, FolderTree, PackagePlus, Settings, Trash2, Utensils } from 'lucide-react';
+import { FolderTree, Settings } from 'lucide-react';
 import Card from '../components/ui/Card.jsx';
 import { labels } from '../utils/labels.js';
 
 const menuItems = [
-  { label: labels.menus, description: labels.menusDescription, to: '/menus', icon: Utensils },
   { label: labels.categoriesTitle, description: labels.categoriesDescription, to: '/categories', icon: FolderTree },
-  { label: labels.recipes, description: labels.recipesDescription, to: '/recipes', icon: ChefHat },
-  { label: labels.restock, description: labels.restockDescription, to: '/restock', icon: PackagePlus },
-  { label: labels.waste, description: labels.wasteDescription, to: '/waste', icon: Trash2 },
-  { label: labels.stockCount, description: labels.stockCountDescription, to: '/stock-count', icon: ClipboardCheck },
   { label: labels.settings, description: labels.settingsDescription, to: '/settings', icon: Settings },
 ];
 
@@ -20,8 +15,8 @@ export default function More() {
         <h1 className="text-[22px] font-extrabold">{labels.more}</h1>
       </header>
       <Card>
-        <h2 className="text-lg font-extrabold">{labels.moreTitle}</h2>
-        <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.moreSubtitle}</p>
+        <h2 className="text-lg font-extrabold">{labels.adminTitle}</h2>
+        <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.adminSubtitle}</p>
         <div className="mt-4 grid gap-3">
           {menuItems.map((page) => (
             <Link

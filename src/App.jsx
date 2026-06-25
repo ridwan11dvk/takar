@@ -5,7 +5,6 @@ import Dashboard from './pages/Dashboard.jsx';
 import Ingredients from './pages/Ingredients.jsx';
 import Menus from './pages/Menus.jsx';
 import More from './pages/More.jsx';
-import Recipe from './pages/Recipe.jsx';
 import Report from './pages/Report.jsx';
 import Restock from './pages/Restock.jsx';
 import Sales from './pages/Sales.jsx';
@@ -24,7 +23,7 @@ export default function App() {
         <Route path="/reports" element={<Report />} />
         <Route path="/menus" element={<Menus />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="/recipes" element={<Recipe />} />
+        <Route path="/recipes" element={<Navigate to="/menus" replace />} />
         <Route path="/restock" element={<Restock />} />
         <Route path="/waste" element={<Waste />} />
         <Route path="/stock-count" element={<StockCount />} />

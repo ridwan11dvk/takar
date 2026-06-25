@@ -34,11 +34,26 @@ export function calculateRestockAverage({
   return { costPerUnitIn, combinedStock, newAvgCost };
 }
 
-export function calculateMenuHpp({ recipes, ingredients }) {
-  return recipes.reduce((total, recipe) => {
+export function calculateMenuHpp({ recipes, ingredients, menu }) {
+  const ingredientCost = recipes.reduce((total, recipe) => {
     const ingredient = ingredients.find((item) => item.id === recipe.ingredientId);
     return total + recipe.qty * (ingredient?.avgCostPerUnit ?? 0);
   }, 0);
+
+  return ingredientCost + calculateMenuExtraCost(menu);
+}
+
+export function calculateMenuExtraCost(menu = {}) {
+  return (
+    (Number(menu.packagingCost) || 0) +
+    (Number(menu.utilityCost) || 0) +
+    (Number(menu.marketplaceCost) || 0) +
+    (Number(menu.otherCost) || 0)
+  );
+}
+
+export function calculateMenuTotalHpp({ recipes, ingredients, menu }) {
+  return calculateMenuHpp({ recipes, ingredients, menu });
 }
 
 export function calculateSaleDraft({ cart, menus, recipes, ingredients }) {
@@ -51,7 +66,7 @@ export function calculateSaleDraft({ cart, menus, recipes, ingredients }) {
     }
 
     const menuRecipes = recipes.filter((recipe) => recipe.menuId === menu.id);
-    const hppAtSale = calculateMenuHpp({ recipes: menuRecipes, ingredients });
+    const hppAtSale = calculateMenuTotalHpp({ recipes: menuRecipes, ingredients, menu });
 
     for (const recipe of menuRecipes) {
       const ingredient = ingredients.find((item) => item.id === recipe.ingredientId);
@@ -103,7 +118,7 @@ export function calculateSaleDraft({ cart, menus, recipes, ingredients }) {
     }));
 
   const totalAmount = items.reduce((total, item) => total + item.subtotal, 0);
-  const totalHpp = ingredientUsages.reduce((total, usage) => total + usage.totalCost, 0);
+  const totalHpp = items.reduce((total, item) => total + item.hppAtSale * item.qty, 0);
 
   return {
     items,

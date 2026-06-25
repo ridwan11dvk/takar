@@ -1,6 +1,7 @@
 import { Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { Link } from 'react-router-dom';
 import Badge from '../components/ui/Badge.jsx';
 import Button from '../components/ui/Button.jsx';
 import Card from '../components/ui/Card.jsx';
@@ -15,10 +16,24 @@ import { createIngredient, deleteIngredientSafely, listIngredients, restockIngre
 import { formatQty, formatRupiah } from '../utils/format.js';
 import { labels } from '../utils/labels.js';
 
+const quickActions = [
+  { label: labels.menuAndRecipe, description: labels.stockHppHint, to: '/menus' },
+  { label: labels.restock, description: labels.restockDescription, to: '/restock' },
+  { label: labels.waste, description: labels.wasteDescription, to: '/waste' },
+  { label: labels.stockCount, description: labels.stockCountDescription, to: '/stock-count' },
+];
+
+const stockSections = [
+  { key: 'stock', label: labels.stockTabStock },
+  { key: 'hpp', label: labels.stockTabHpp },
+  { key: 'activity', label: labels.stockTabActivity },
+];
+
 export default function Ingredients() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState(labels.all);
   const [showForm, setShowForm] = useState(false);
+  const [activeSection, setActiveSection] = useState('stock');
   const [editingId, setEditingId] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [message, setMessage] = useState('');
@@ -36,6 +51,21 @@ export default function Ingredients() {
   const ingredients = useLiveQuery(() => listIngredients(), []) ?? [];
   const categoryOptions = useLiveQuery(() => listCategories(CategoryType.INGREDIENT), []) ?? [];
   const filterCategories = [labels.all, ...categoryOptions.map((item) => item.name)];
+  const stockSummary = useMemo(() => {
+    const lowStockCount = ingredients.filter((ingredient) => ingredient.currentStock > 0 && ingredient.currentStock <= ingredient.minStock).length;
+    const minusStockCount = ingredients.filter((ingredient) => ingredient.currentStock < 0).length;
+    const stockValue = ingredients.reduce((total, ingredient) => {
+      const positiveStock = Math.max(Number(ingredient.currentStock) || 0, 0);
+      return total + positiveStock * (Number(ingredient.avgCostPerUnit) || 0);
+    }, 0);
+
+    return {
+      total: ingredients.length,
+      lowStockCount,
+      minusStockCount,
+      stockValue,
+    };
+  }, [ingredients]);
 
   useEffect(() => {
     ensureDefaultCategories().catch((error) => {
@@ -128,6 +158,59 @@ export default function Ingredients() {
 
       {message && <div className="rounded-2xl bg-[#EAF6EC] px-4 py-3 text-sm font-bold text-success">{message}</div>}
 
+      <Card>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="font-extrabold">{labels.stockSummary}</h2>
+            <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.stockHubHint}</p>
+          </div>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="rounded-2xl bg-surface-alt px-4 py-3">
+            <p className="text-xs font-bold text-text-secondary">{labels.stockTotalIngredients}</p>
+            <p className="mt-1 text-2xl font-extrabold">{stockSummary.total}</p>
+          </div>
+          <div className="rounded-2xl bg-surface-alt px-4 py-3">
+            <p className="text-xs font-bold text-text-secondary">{labels.lowStock}</p>
+            <p className="mt-1 text-2xl font-extrabold text-warning">{stockSummary.lowStockCount}</p>
+          </div>
+          <div className="rounded-2xl bg-surface-alt px-4 py-3">
+            <p className="text-xs font-bold text-text-secondary">{labels.minus}</p>
+            <p className="mt-1 text-2xl font-extrabold text-danger">{stockSummary.minusStockCount}</p>
+          </div>
+          <div className="rounded-2xl bg-surface-alt px-4 py-3">
+            <p className="text-xs font-bold text-text-secondary">{labels.stockValue}</p>
+            <p className="mt-1 text-lg font-extrabold">{formatRupiah(stockSummary.stockValue)}</p>
+          </div>
+        </div>
+      </Card>
+
+      <nav aria-label={labels.stockQuickActions} className="grid grid-cols-2 gap-2">
+        {quickActions.map((action) => (
+          <Link key={action.to} to={action.to} className="rounded-2xl bg-white px-4 py-3 shadow-soft">
+            <span className="block font-extrabold text-primary">{action.label}</span>
+            <span className="mt-1 block text-xs font-semibold text-text-secondary">{action.description}</span>
+          </Link>
+        ))}
+      </nav>
+
+      <div role="tablist" aria-label={labels.stockSections} className="flex gap-2 overflow-x-auto pb-1">
+        {stockSections.map((section) => (
+          <button
+            key={section.key}
+            type="button"
+            role="tab"
+            aria-selected={activeSection === section.key}
+            className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${
+              activeSection === section.key ? 'bg-primary text-white' : 'bg-white text-text-secondary'
+            }`}
+            onClick={() => setActiveSection(section.key)}
+          >
+            {section.label}
+          </button>
+        ))}
+      </div>
+
       {showForm && (
         <Card>
           <form className="grid gap-3" onSubmit={handleCreate}>
@@ -160,87 +243,113 @@ export default function Ingredients() {
         </Card>
       )}
 
-      <label className="flex h-12 items-center gap-2 rounded-2xl bg-white px-4 shadow-soft">
-        <Search className="text-text-muted" size={20} />
-        <input
-          className="w-full bg-transparent text-sm font-semibold outline-none placeholder:text-text-muted"
-          placeholder={labels.searchIngredient}
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-      </label>
+      {activeSection === 'stock' && (
+        <>
+          <label className="flex h-12 items-center gap-2 rounded-2xl bg-white px-4 shadow-soft">
+            <Search className="text-text-muted" size={20} />
+            <input
+              className="w-full bg-transparent text-sm font-semibold outline-none placeholder:text-text-muted"
+              placeholder={labels.searchIngredient}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </label>
 
-      <div className="flex gap-2 overflow-x-auto pb-1">
-        {filterCategories.map((item) => (
-          <button
-            key={item}
-            type="button"
-            className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${
-              item === category ? 'bg-primary text-white' : 'bg-white text-text-secondary'
-            }`}
-            onClick={() => setCategory(item)}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {filterCategories.map((item) => (
+              <button
+                key={item}
+                type="button"
+                className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${
+                  item === category ? 'bg-primary text-white' : 'bg-white text-text-secondary'
+                }`}
+                onClick={() => setCategory(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
 
-      {ingredients.length === 0 && (
-        <Card className="py-10 text-center">
-          <p className="text-lg font-extrabold">{labels.emptyIngredients}</p>
-          <Button className="mt-4" onClick={() => { setEditingId(null); setShowForm(true); }}>{labels.addIngredient}</Button>
-        </Card>
-      )}
-
-      {ingredients.length > 0 && filteredIngredients.length === 0 && (
-        <Card className="py-10 text-center">
-          <p className="text-lg font-extrabold">{labels.ingredientNotFound}</p>
-          <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.addNewIngredientHint}</p>
-        </Card>
-      )}
-
-      <div className="space-y-3">
-        {filteredIngredients.map((ingredient) => {
-          const status = getStockStatus(ingredient);
-          return (
-            <Card key={ingredient.id} className="flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-base font-bold">{ingredient.name}</h2>
-                  <Badge label={status.label} tone={status.tone} />
-                </div>
-                <p className={`mt-2 text-xl font-extrabold ${status.key === 'minus' ? 'text-danger' : ''}`}>
-                  {formatQty(ingredient.currentStock)} {ingredient.unit}
-                </p>
-                <p className="text-xs font-semibold text-text-muted">{ingredient.category}</p>
-              </div>
-              <div className="flex shrink-0 flex-col gap-2">
-                <button
-                  type="button"
-                  className="min-h-10 rounded-xl bg-surface-alt px-3 text-sm font-bold text-primary"
-                  onClick={() => handleRestock(ingredient)}
-                >
-                  {labels.restock}
-                </button>
-                <button
-                  type="button"
-                  className="min-h-10 rounded-xl border border-border px-3 text-sm font-bold text-text-secondary"
-                  onClick={() => handleEdit(ingredient)}
-                >
-                  {labels.edit}
-                </button>
-                <button
-                  type="button"
-                  className="min-h-10 rounded-xl border border-border px-3 text-sm font-bold text-danger"
-                  onClick={() => setDeleteTarget(ingredient)}
-                >
-                  {labels.delete}
-                </button>
-              </div>
+          {ingredients.length === 0 && (
+            <Card className="py-10 text-center">
+              <p className="text-lg font-extrabold">{labels.emptyIngredients}</p>
+              <Button className="mt-4" onClick={() => { setEditingId(null); setShowForm(true); }}>{labels.addIngredient}</Button>
             </Card>
-          );
-        })}
-      </div>
+          )}
+
+          {ingredients.length > 0 && filteredIngredients.length === 0 && (
+            <Card className="py-10 text-center">
+              <p className="text-lg font-extrabold">{labels.ingredientNotFound}</p>
+              <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.addNewIngredientHint}</p>
+            </Card>
+          )}
+
+          <div className="space-y-3">
+            {filteredIngredients.map((ingredient) => {
+              const status = getStockStatus(ingredient);
+              return (
+                <Card key={ingredient.id} className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-base font-bold">{ingredient.name}</h2>
+                      <Badge label={status.label} tone={status.tone} />
+                    </div>
+                    <p className={`mt-2 text-xl font-extrabold ${status.key === 'minus' ? 'text-danger' : ''}`}>
+                      {formatQty(ingredient.currentStock)} {ingredient.unit}
+                    </p>
+                    <p className="text-xs font-semibold text-text-muted">{ingredient.category}</p>
+                  </div>
+                  <div className="flex shrink-0 flex-col gap-2">
+                    <button
+                      type="button"
+                      className="min-h-10 rounded-xl bg-surface-alt px-3 text-sm font-bold text-primary"
+                      onClick={() => handleRestock(ingredient)}
+                    >
+                      {labels.restock}
+                    </button>
+                    <button
+                      type="button"
+                      className="min-h-10 rounded-xl border border-border px-3 text-sm font-bold text-text-secondary"
+                      onClick={() => handleEdit(ingredient)}
+                    >
+                      {labels.edit}
+                    </button>
+                    <button
+                      type="button"
+                      className="min-h-10 rounded-xl border border-border px-3 text-sm font-bold text-danger"
+                      onClick={() => setDeleteTarget(ingredient)}
+                    >
+                      {labels.delete}
+                    </button>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {activeSection === 'hpp' && (
+        <Card>
+          <h2 className="font-extrabold">{labels.menuAndRecipe}</h2>
+          <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.stockHppHint}</p>
+          <Link to="/menus" className="mt-4 block rounded-2xl bg-primary px-4 py-3 text-center font-bold text-white">
+            {labels.menuAndRecipe}
+          </Link>
+        </Card>
+      )}
+
+      {activeSection === 'activity' && (
+        <Card>
+          <h2 className="font-extrabold">{labels.stockTabActivity}</h2>
+          <p className="mt-1 text-sm font-semibold text-text-secondary">{labels.stockActivityHint}</p>
+          <div className="mt-4 grid gap-2">
+            <Link to="/restock" className="rounded-2xl bg-surface-alt px-4 py-3 font-bold text-primary">{labels.restock}</Link>
+            <Link to="/waste" className="rounded-2xl bg-surface-alt px-4 py-3 font-bold text-primary">{labels.waste}</Link>
+            <Link to="/stock-count" className="rounded-2xl bg-surface-alt px-4 py-3 font-bold text-primary">{labels.stockCount}</Link>
+          </div>
+        </Card>
+      )}
       {editingId && (
         <Modal title={labels.editIngredient} onClose={() => { setEditingId(null); setForm({ name: '', category: categoryOptions[0]?.name ?? 'Kopi', unit: Unit.GRAM, currentStock: '', minStock: '', avgCostPerUnit: '', purchaseTotalPrice: '', lastPurchasePrice: '', note: '' }); }}>
           <form className="grid gap-3" onSubmit={handleCreate}>
